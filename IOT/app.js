@@ -3,12 +3,11 @@ const { ReadlineParser } = require('@serialport/parser-readline'); // Importando
 const { MongoClient } = require('mongodb');
 
 // Configuração da porta serial
-const port = new SerialPort({ path: 'COM6', baudRate: 9600 }); // Definindo o caminho da porta
+const port = new SerialPort({ path: 'COM8', baudRate: 9600 }); // Definindo o caminho da porta
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
 
-const uri =
-  'mongodb+srv://PedroMoreira27:Zubumafu%40123@crud.amjibhv.mongodb.net/sensordata?retryWrites=true&w=majority';
-
+// Configuração do URI de conexão do MongoDB
+const uri = 'mongodb+srv://PedroMoreira27:Zubumafu%40123@crud.amjibhv.mongodb.net/sensordata?retryWrites=true&w=majority';
 const client = new MongoClient(uri);
 
 async function connectToDB() {
@@ -43,6 +42,9 @@ parser.on('data', (line) => {
   // Tenta converter a linha para JSON
   try {
     const data = JSON.parse(line);
+
+    // Adiciona o timestamp atual
+    data.timestamp = new Date();
 
     // Enviar para o MongoDB
     saveToMongo(data);
