@@ -18,6 +18,10 @@ const readingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    timestamp: {
+      type: Date,
+      default: Date.now, // Define um valor padrão usando a data e hora atuais
+    },
   },
   { timestamps: true },
 ); 
