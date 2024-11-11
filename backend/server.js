@@ -12,11 +12,11 @@ const app = express();
 const mongoDB = process.env.MONGODB_URI; // Carregando a URI do .env
 
 // Conectar ao MongoDB
-mongoose
-  .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Conexão com o MongoDB estabelecida!'))
-  .catch((err) => console.error('Erro ao conectar ao MongoDB:', err));
+  .catch((error) => console.error('Erro ao conectar com o MongoDB:', error));
 
+  
 app.use(bodyParser.json());
 app.use('/readings', readingsRouter); // Prefixo das rotas
 app.use('/users', userRoutes); // Prefixo das rotas de usuário

@@ -9,6 +9,9 @@ router.use(
   }),
 );
 
+// Rota para obter a leitura mais recente
+router.get('/most-recent', readingController.getMostRecentReading);
+
 // Rota para criar uma nova leitura
 router.post('/', readingController.createReading);
 
