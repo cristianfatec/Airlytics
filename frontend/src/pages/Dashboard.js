@@ -13,7 +13,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMostRecentReading = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/readings/most-recent');
+        // Verifique se a URL está correta conforme as configurações do backend
+        const response = await axios.get('http://localhost:5000/v1/readings/most-recent');
         setReading(response.data);
 
         const { humidity, temperature } = response.data;

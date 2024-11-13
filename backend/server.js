@@ -5,21 +5,22 @@ const dotenv = require('dotenv'); // Importa dotenv
 
 dotenv.config(); // Carrega as variáveis de ambiente do .env
 
-const readingsRouter = require('./routes/routes'); // Ajuste o caminho conforme necessário
+const readingsRouter = require('./routes/routes'); // Importa as rotas de leituras
 const userRoutes = require('./routes/userRoutes'); // Importa as rotas de usuário
 
 const app = express();
-const mongoDB = process.env.MONGODB_URI; // Carregando a URI do .env
+const mongoDB = process.env.MONGODB_URI; // Carrega a URI do .env
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Conexão com o MongoDB estabelecida!'))
   .catch((error) => console.error('Erro ao conectar com o MongoDB:', error));
 
-  
 app.use(bodyParser.json());
-app.use('/readings', readingsRouter); // Prefixo das rotas
-app.use('/users', userRoutes); // Prefixo das rotas de usuário
+app.use('/v1/readings', readingsRouter); // Prefixo para as rotas de leituras
+app.use('/v1/users', userRoutes); // Prefixo para as rotas de usuários
+
+// Rota de teste
 app.get('/', (req, res) => {
   res.send('success');
 });

@@ -1,0 +1,71 @@
+estou desenvolvendo uma aplicação sistema de monitoramento que coleta dados ambientais,
+ como temperatura, umidade e qualidade do ar, e exibe essas informações em um painel de controle 
+ (dashboard) para o usuário
+
+seguem as caracteristicas
+
+frontend
+├── node_modules
+├── public
+│   ├── index.html
+│   └── manifest.json
+├── src
+│   ├── components
+│   │   └── imagemFundo.jpeg
+│   ├── pages
+│   │   ├── Dashboard.js
+│   │   ├── DetalhesAr.js
+│   │   ├── DetalhesTemperatura.js
+│   │   ├── DetalhesUmidade.js
+│   │   └── Login.js
+│   ├── styles
+│   │   ├── Dashboard.css
+│   │   └── Login.css
+│   ├── App.js
+│   ├── index.css
+│   ├── index.js
+│   ├── reportWebVitals.js
+│   └── setupTests.js
+├── .env
+├── .gitignore
+├── package-lock.json
+├── package.json
+└── README.md
+Frontend (React):
+
+axios: Para fazer requisições HTTP à API.
+dotenv: Para gerenciar variáveis de ambiente.
+react: Biblioteca principal para criação de interfaces.
+react-dom: Para manipulação da árvore DOM do React.
+react-router-dom: Para gerenciar rotas e navegação.
+react-scripts: Scripts de configuração do React.
+
+
+backend
+├── controllers
+│   ├── controller.js
+│   ├── userController.js
+├── models
+│   ├── model.js
+│   ├── user.js
+├── routes
+│   ├── routes.js
+│   ├── userRoutes.js    
+├── .env
+├── node_modules
+├── openapi.yaml
+├── package-lock.json
+├── package.json
+└── server.js
+Dependências e Ferramentas:
+
+Backend (Node.js):
+
+bcryptjs: Para criptografar senhas.
+body-parser: Para parsear dados JSON no corpo das requisições.
+cors: Para permitir o acesso do frontend à API.
+dotenv: Para gerenciar variáveis de ambiente.
+express: Framework para criar a API.
+mongoose: Para modelar e conectar com o banco de dados MongoDB. 
+
+

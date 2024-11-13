@@ -1,11 +1,183 @@
-// src/pages/DetalhesUmidade.js
-import React from 'react';
+// // src/pages/DetalhesUmidade.js
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { Line } from 'react-chartjs-2';
+// import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
+
+// // Configuração do Chart.js
+// ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
+
+// const DetalhesUmidade = () => {
+//   const [data, setData] = useState({
+//     labels: [],
+//     datasets: [
+//       {
+//         label: 'Umidade',
+//         data: [],
+//         borderColor: 'rgba(75,192,192,1)',
+//         backgroundColor: 'rgba(75,192,192,0.2)',
+//         fill: true,
+//       },
+//     ],
+//   });
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchReadings = async () => {
+//       try {
+//         const response = await axios.get('http://localhost:5000/v1/readings');
+//         console.log(response.data); // Verifique os dados aqui
+
+//         const readings = response.data;
+
+//         // Verifique se a resposta é um array
+//         if (!Array.isArray(readings)) {
+//           console.error('A resposta da API não é um array');
+//           setLoading(false);
+//           return;
+//         }
+
+//         // Filtrar as leituras dos últimos 30 dias
+//         const last30DaysReadings = readings.filter((reading) => {
+//           const readingDate = new Date(reading.timestamp);
+//           const thirtyDaysAgo = new Date();
+//           thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+//           return readingDate >= thirtyDaysAgo;
+//         });
+
+//         // Preparar os dados para o gráfico
+//         const dates = last30DaysReadings.map((reading) => new Date(reading.timestamp).toLocaleDateString());
+//         const humidityValues = last30DaysReadings.map((reading) => reading.humidity);
+
+//         const chartData = {
+//           labels: dates,
+//           datasets: [
+//             {
+//               label: 'Umidade',
+//               data: humidityValues,
+//               borderColor: 'rgba(75,192,192,1)',
+//               backgroundColor: 'rgba(75,192,192,0.2)',
+//               fill: true,
+//             },
+//           ],
+//         };
+
+//         setData(chartData);
+//         setLoading(false);
+//       } catch (error) {
+//         console.error('Erro ao buscar as leituras:', error);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchReadings();
+//   }, []);
+
+//   return (
+//     <div>
+//       <h2>Detalhes da Umidade dos Últimos 30 Dias</h2>
+//       {loading ? (
+//         <p>Carregando...</p>
+//       ) : (
+//         <div>
+//           <Line data={data} />
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default DetalhesUmidade;
+
+
+import React, { useEffect, useState } from 'react';
+import "../styles/DetalhesTemperatura.css"
+import { Line } from 'react-chartjs-2';
+import axios from 'axios';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const DetalhesUmidade = () => {
+  const [data, setData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Umidade média',
+        data: [],
+        fill: false,
+        borderColor: 'rgba(75,192,192,1)',
+        tension: 0.1,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const fetchHumidityData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/v1/readings');
+        const readings = response.data;
+
+        // Processa os dados para calcular a média diária dos últimos 30 dias
+        const dailyAverages = {};
+        readings.forEach((reading) => {
+          const date = new Date(reading.timestamp).toLocaleDateString(); // Obtém apenas a data (sem hora)
+          if (!dailyAverages[date]) {
+            dailyAverages[date] = { sum: 0, count: 0 };
+          }
+          dailyAverages[date].sum += reading.humidity;
+          dailyAverages[date].count += 1;
+        });
+
+        // Cria os arrays para o gráfico com as médias dos últimos 30 dias
+        const last30Days = Object.keys(dailyAverages)
+          .slice(-30) // Pega os últimos 30 dias
+          .map((date) => ({
+            date,
+            avgHumidity: dailyAverages[date].sum / dailyAverages[date].count,
+          }));
+
+        setData({
+          labels: last30Days.map((day) => day.date),
+          datasets: [
+            {
+              label: 'Umidade Média ',
+              data: last30Days.map((day) => day.avgHumidity),
+              fill: false,
+              borderColor: 'rgba(75,192,192,1)',
+              tension: 0.1,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error('Erro ao buscar dados de umidade:', error);
+      }
+    };
+
+    fetchHumidityData();
+  }, []);
+
   return (
     <div>
-      <h1>Detalhes da Umidade</h1>
-      <p>Aqui você pode adicionar mais informações detalhadas sobre a Umidade.</p>
+      <h2>Umidade Média dos Últimos 30 Dias</h2>
+      <Line data={data} />
     </div>
   );
 };

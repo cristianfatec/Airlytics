@@ -5,11 +5,11 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:5000/api/sensors
+  - url: http://localhost:5000/v1
     description: Servidor local para desenvolvimento
 
 paths:
-  /:
+  /readings:
     get:
       summary: Recupera todos os dados de sensores
       tags:
@@ -48,7 +48,24 @@ paths:
         '500':
           description: Erro ao criar os dados do sensor
 
-  /{id}:
+  /readings/most-recent:
+    get:
+      summary: Recupera a leitura de sensor mais recente
+      tags:
+        - Sensor Data
+      responses:
+        '200':
+          description: Dados do sensor mais recente recuperados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorData'
+        '404':
+          description: Nenhuma leitura encontrada
+        '500':
+          description: Erro ao recuperar os dados mais recentes
+
+  /readings/{id}:
     get:
       summary: Recupera dados de sensor por ID
       tags:
@@ -101,36 +118,6 @@ paths:
         '500':
           description: Erro ao atualizar os dados do sensor
 
-    patch:
-      summary: Atualiza parcialmente dados do sensor por ID
-      tags:
-        - Sensor Data
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SensorData'
-      responses:
-        '200':
-          description: Dados do sensor atualizados parcialmente com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SensorData'
-        '400':
-          description: Erro de validação dos dados fornecidos
-        '404':
-          description: Dados do sensor não encontrados
-        '500':
-          description: Erro ao atualizar os dados do sensor
-
     delete:
       summary: Exclui dados de sensor por ID
       tags:
@@ -142,12 +129,50 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Dados do sensor excluídos com sucesso
         '404':
           description: Dados do sensor não encontrados
         '500':
           description: Erro ao excluir os dados do sensor
+
+  /users/register:
+    post:
+      summary: Registra um novo usuário
+      tags:
+        - User Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: Usuário registrado com sucesso
+        '400':
+          description: Erro ao registrar usuário
+
+  /users/login:
+    post:
+      summary: Autentica um usuário existente
+      tags:
+        - User Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: Login bem-sucedido
+        '401':
+          description: Credenciais inválidas
+        '404':
+          description: Usuário não encontrado
+        '500':
+          description: Erro ao fazer login
 
 components:
   schemas:
@@ -163,6 +188,7 @@ components:
         id:
           type: string
           description: ID único do registro
+          readOnly: true
         humidity:
           type: number
           description: Umidade em porcentagem (0-100)
@@ -184,3 +210,40 @@ components:
           format: date-time
           description: Data e hora da leitura do sensor
           example: "2024-10-28T14:30:00Z"
+
+    UserRegistration:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: Nome de usuário
+          example: "user123"
+        email:
+          type: string
+          format: email
+          description: Endereço de email
+          example: "user@example.com"
+        password:
+          type: string
+          description: Senha do usuário
+          example: "senhaSegura123"
+
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Endereço de email
+          example: "user@example.com"
+        password:
+          type: string
+          description: Senha do usuário
+          example: "senhaSegura123"
