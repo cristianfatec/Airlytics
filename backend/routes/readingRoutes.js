@@ -1,7 +1,9 @@
+//./routes/readingRoutes.js
+
 const express = require('express');
 const cors = require('cors');
 const router = express.Router();
-const readingController = require('../controller/controller');
+const readingController = require('../controllers/readingController');
 
 router.use(
   cors({

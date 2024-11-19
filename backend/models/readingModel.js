@@ -1,3 +1,5 @@
+//./models/readingModel.js
+
 const mongoose = require('mongoose');
 
 const readingSchema = new mongoose.Schema(

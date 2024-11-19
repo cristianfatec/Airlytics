@@ -1,4 +1,6 @@
-const Reading = require('../models/model');
+//./controller/readingController.js
+
+const Reading = require('../models/readingModel');
 
 // Criar uma nova leitura
 exports.createReading = async (req, res) => {

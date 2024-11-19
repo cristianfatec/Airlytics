@@ -41,7 +41,7 @@ react-router-dom: Para gerenciar rotas e navegação.
 react-scripts: Scripts de configuração do React.
 
 
-backend
+API-AIRLYTICS
 ├── controllers
 │   ├── controller.js
 │   ├── userController.js
@@ -52,6 +52,7 @@ backend
 │   ├── routes.js
 │   ├── userRoutes.js    
 ├── .env
+├── .gitignore
 ├── node_modules
 ├── openapi.yaml
 ├── package-lock.json

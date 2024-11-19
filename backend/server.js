@@ -5,7 +5,7 @@ const dotenv = require('dotenv'); // Importa dotenv
 
 dotenv.config(); // Carrega as variáveis de ambiente do .env
 
-const readingsRouter = require('./routes/routes'); // Importa as rotas de leituras
+const readingsRouter = require('./routes/readingRoutes'); // Importa as rotas de leituras
 const userRoutes = require('./routes/userRoutes'); // Importa as rotas de usuário
 
 const app = express();
