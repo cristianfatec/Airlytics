@@ -1,15 +1,38 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Lógica para login (chamada API, validação etc.)
-    console.log('Login', { email, password });
+
+    try {
+      const response = await axios.post('http://localhost:5000/v1/users/login', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Redireciona para o dashboard se o login for bem-sucedido
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      // Exibe mensagem de erro se o login falhar
+      if (error.response && error.response.status === 401) {
+        setErrorMessage('Senha incorreta!');
+      } else if (error.response && error.response.status === 404) {
+        setErrorMessage('Usuário não encontrado!');
+      } else {
+        setErrorMessage('Erro ao fazer login. Tente novamente.');
+      }
+    }
   };
 
   return (
@@ -35,6 +58,7 @@ const Login = () => {
               required
             />
           </div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <button type="submit">Entrar</button>
         </form>
       </div>
