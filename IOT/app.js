@@ -1,3 +1,5 @@
+//./IOT/app.js
+
 const SerialPort = require('serialport').SerialPort; // Importando SerialPort
 const { ReadlineParser } = require('@serialport/parser-readline'); // Importando o parser
 const { MongoClient } = require('mongodb');
