@@ -72,5 +72,123 @@ Para rodar a aplicação localmente, você precisa configurar o frontend, backen
 
    ```bash
    git clone https://github.com/cristianfatec/API-Airlytics.git
+    ```
+2. **Acessar front**:
+
+   ```bash
    cd frontend
-    
+    ```
+3. **Instalar depêndencias**:
+
+   ```bash
+   npm install
+    ```
+4. **Rodar frontend**:
+
+   ```bash
+   npm start
+    ```
+A aplicação deve estar disponível em http://localhost:3000. Isso permitirá que você veja o painel e interaja com os dado
+
+### Configuração do Backtend
+
+1. **Clonar o repositório**:
+
+   ```bash
+   git clone https://github.com/cristianfatec/API-Airlytics.git
+    ```
+2. **Acessar backend**:
+
+   ```bash
+   cd backend
+    ```
+3. **Instalar depêndencias**:
+
+   ```bash
+   npm install
+    ```
+
+4. **Criar arquivo .env: Adicione sua URI do MongoDB ao arquivo .env:**:
+
+   ```bash
+   MONGO_URI=your_mongo_connection_string
+   PORT=5000
+    ```
+
+5. **Rodar backend**:
+
+   ```bash
+   node server.js
+    ```
+O backend deve estar rodando em http://localhost:5000, lidando com requisições API relacionadas aos dados dos sensores.
+
+### Documentação da API
+
+O backend do Airlytics expõe vários endpoints para gerenciar os dados dos sensores.
+
+#### GET /v1/readings
+**Descrição**: Recupera todos os dados dos sensores
+**Resposta**:
+```json
+[
+  {
+    "humidity": 55.5,
+    "temperature": 22.5,
+    "timestamp": "2024-11-19T12:00:00Z",
+    "mq_sensor_value": 500,
+    "mq_voltage": 2.5
+  }
+]
+```
+
+#### GET /v1/readings/{id}
+**Descrição**:Recupera os dados do sensor por ID. Parâmetros:
+id: O ID da entrada específica de dados do sensor
+**Resposta**:
+```json
+[
+  {
+  "humidity": 55.5,
+  "temperature": 22.5,
+  "timestamp": "2024-11-19T12:00:00Z",
+  "mq_sensor_value": 500,
+  "mq_voltage": 2.5
+  }
+]
+```
+
+#### POST /v1/readings
+**Descrição**:Cria uma nova entrada de dados do sensor. Corpo da Requisição:
+```json
+[
+  {
+  "humidity": 55.5,
+  "temperature": 22.5,
+  "mq_sensor_value": 500,
+  "mq_voltage": 2.5
+  }
+]
+```
+
+**Resposta**:
+
+```
+{
+  "message": "Sensor data created successfully"
+}
+```
+
+#### GET /v1/readings/most-recent
+**Descrição**:Recupera a leitura mais recente do sensor. 
+**Resposta**:
+```json
+[
+  {
+  "humidity": 55.5,
+  "temperature": 22.5,
+  "timestamp": "2024-11-19T12:00:00Z",
+  "mq_sensor_value": 500,
+  "mq_voltage": 2.5
+  }
+]
+```
